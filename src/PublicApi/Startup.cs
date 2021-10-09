@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -127,6 +128,7 @@ namespace Microsoft.eShopWeb.PublicApi
                                       builder.AllowAnyHeader();
                                   });
             });
+            throw new Exception("Cannot move further");
 
             services.AddControllers();
             services.AddMediatR(typeof(CatalogItem).Assembly);
@@ -167,6 +169,7 @@ namespace Microsoft.eShopWeb.PublicApi
                     }
                 });
             });
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
