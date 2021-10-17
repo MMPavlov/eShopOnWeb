@@ -29,9 +29,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             _apiUrl = baseUrlConfiguration.AzureFunctionBase;
         }
 
-        public async Task CallFunctionAsync(Dictionary<string, int> orderDetails)
+        public async Task CallFunctionAsync(Order order)
         {
-            var itemOrder = new List<ItemOrder>();
+            /*var itemOrder = new List<ItemOrder>();
             foreach (var entry in orderDetails)
             {
                 itemOrder.Add(new ItemOrder
@@ -39,8 +39,10 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                     Id = entry.Key,
                     Quantity = entry.Value
                 });
-            }
-            var orderJson = new StringContent(JsonConvert.SerializeObject(itemOrder));
+            }*/
+            var fortesting = JsonConvert.SerializeObject(this.Map(order));
+
+            var orderJson = new StringContent(JsonConvert.SerializeObject(this.Map(order)));
             await _httpClient.PostAsync($"{_apiUrl}", orderJson);
         }
 
@@ -50,6 +52,39 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             public string Id { get; set; }
             [JsonPropertyName("quantity")]
             public int Quantity { get; set; }
+        }
+
+        private class OrderDetails
+        {
+            [JsonProperty("id")]
+            public string Id { get; set; }
+            [JsonProperty("shippingAddress")]
+            public Address ShippingAddress { get; set; }
+            [JsonProperty("items")]
+            public List<OrderItem> Items { get; set; }
+            [JsonProperty("price")]
+            public decimal Price { get; set; }
+        }
+
+        private OrderDetails Map(Order order)
+        {
+            var orderDetail = new OrderDetails
+            {
+                Id = order.Id.ToString(),
+                ShippingAddress = order.ShipToAddress
+            };
+
+            decimal price = 0;
+            var transientList = new List<OrderItem>();
+            foreach (var item in order.OrderItems)
+            {
+                transientList.Add(item);
+                price += item.UnitPrice * item.Units;
+            }
+            orderDetail.Items = transientList;
+            orderDetail.Price = price;
+
+            return orderDetail;
         }
     }
 }

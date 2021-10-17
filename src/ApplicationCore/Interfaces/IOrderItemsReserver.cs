@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
     public interface IOrderItemsReserver
     {
-        Task CallFunctionAsync(Dictionary<string, int> orderDetails);
+        Task CallFunctionAsync(Order orderDetails);
     }
 }
