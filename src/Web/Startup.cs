@@ -46,8 +46,10 @@ namespace Microsoft.eShopWeb.Web
             // ConfigureInMemoryDatabases(services);
 
             // use real database
+            var connectionStringName = "databaseconnstring";
+            var connectionStringValue = Configuration[connectionStringName];
             services.AddDbContext<CatalogContext>(c =>
-               c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+               c.UseSqlServer(connectionStringValue));
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
 

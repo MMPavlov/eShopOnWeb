@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Azure.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -45,6 +47,13 @@ namespace Microsoft.eShopWeb.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    var appConfig = config.Build();
+
+                    Uri vaultUri = new Uri(appConfig["SecretKeyVaultUrl"]);
+                    config.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
                 });
     }
 }
