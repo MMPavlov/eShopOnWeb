@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 using JsonConverter = System.Text.Json.Serialization.JsonConverter;
+using Azure.Messaging.ServiceBus;
+using Microsoft.Azure.ServiceBus;
+using System;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
@@ -21,6 +24,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         private readonly IUriComposer _uriComposer;
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
+        private IQueueClient queueClient;
 
         public OrderItemsReserver(IUriComposer uriComposer, HttpClient httpClient, BaseUrlConfiguration baseUrlConfiguration)
         {
@@ -44,6 +48,29 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
             var orderJson = new StringContent(JsonConvert.SerializeObject(this.Map(order)));
             await _httpClient.PostAsync($"{_apiUrl}", orderJson);
+        }
+
+        public async Task SendToServiceBusAsync(Order order)
+        {
+            var connectionString = "Endpoint=sb://servicebuseshopweb.servicebus.windows.net/;SharedAccessKeyName=SharedAccessKey;SharedAccessKey=pLTblc5449DMJsne7XPna/Wb6x52FY0Xq3ffkac3KHg=";
+            var queueName = "pendingorders";
+
+            var orderJson = JsonConvert.SerializeObject(this.Map(order));
+            string messageBody = orderJson;
+            var message = new Message(Encoding.UTF8.GetBytes(messageBody));
+            queueClient = new QueueClient(connectionString, queueName);
+            try
+            {
+                await queueClient.SendAsync(message);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
+            }
+
+            await queueClient.CloseAsync();
+
+
         }
 
         private class ItemOrder

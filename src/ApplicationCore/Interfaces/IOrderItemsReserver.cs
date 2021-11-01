@@ -10,5 +10,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
     public interface IOrderItemsReserver
     {
         Task CallFunctionAsync(Order orderDetails);
+
+        Task SendToServiceBusAsync(Order order);
     }
 }
