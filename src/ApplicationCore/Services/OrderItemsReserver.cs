@@ -52,7 +52,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
         public async Task SendToServiceBusAsync(Order order)
         {
-            var connectionString = "Endpoint=sb://servicebuseshopweb.servicebus.windows.net/;SharedAccessKeyName=SharedAccessKey;SharedAccessKey=pLTblc5449DMJsne7XPna/Wb6x52FY0Xq3ffkac3KHg=";
+            var connectionString = "Endpoint=sb://pavlovmmfinaltaskservicebus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=9LCf6LqJjwVxxfXAlFlDWPbdtf1Hul/AV3FwnqZu+uo=";
             var queueName = "pendingorders";
 
             var orderJson = JsonConvert.SerializeObject(this.Map(order));

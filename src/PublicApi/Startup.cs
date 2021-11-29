@@ -51,8 +51,11 @@ namespace Microsoft.eShopWeb.PublicApi
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
+            var connectionStringValue = "Server=tcp:pavlovmm-finaltask-azuresqlserver.database.windows.net,1433;Initial Catalog=pavlovmm-finaltask-azuresql;Persist Security Info=False;User ID=azuresql;Password=Engine123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+
             services.AddDbContext<CatalogContext>(c =>
-                c.UseInMemoryDatabase("Catalog"));
+               c.UseSqlServer(connectionStringValue));
 
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));

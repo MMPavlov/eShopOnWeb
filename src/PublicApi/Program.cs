@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Azure.Identity;
 
 namespace Microsoft.eShopWeb.PublicApi
 {
@@ -46,6 +48,7 @@ namespace Microsoft.eShopWeb.PublicApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
                 });
     }
 }

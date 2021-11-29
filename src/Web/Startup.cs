@@ -42,15 +42,12 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            // use in-memory database
-            // ConfigureInMemoryDatabases(services);
+            var connectionStringValue = "Server=tcp:pavlovmm-finaltask-azuresqlserver.database.windows.net,1433;Initial Catalog=pavlovmm-finaltask-azuresql;Persist Security Info=False;User ID=azuresql;Password=Engine123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-            // use real database
-            //var connectionStringName = "databaseconnstring";
-            //var connectionStringValue = Configuration[connectionStringName];
-            services.AddDbContext<CatalogContext>(c =>
-             // c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
-                c.UseInMemoryDatabase("Catalog"));
+
+            services.AddDbContext<CatalogContext>(c =>             
+                c.UseSqlServer(connectionStringValue));
+
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
 
@@ -103,7 +100,8 @@ namespace Microsoft.eShopWeb.Web
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {           
+
             services.AddCookieSettings();
 
 

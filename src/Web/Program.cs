@@ -50,9 +50,11 @@ namespace Microsoft.eShopWeb.Web
                 })
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    var appConfig = config.Build();
+                   
+                    var buildConfig = config.Build();
+                    //var vaultUriString = buildConfig[Constants.VAULT_URI];
 
-                    //Uri vaultUri = new Uri(appConfig["SecretKeyVaultUrl"]);
+                    //Uri vaultUri = new Uri(vaultUriString);
                     //config.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
                 });
     }
